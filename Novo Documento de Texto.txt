@@ -1,0 +1,29 @@
+import os
+import openpyxl
+
+# Pasta de origem e destino
+pasta_origem = 'C:\\Users\\Aléxia Natis\\Desktop\\Excel com formula'
+pasta_destino = 'C:\\Users\\Aléxia Natis\\Desktop\\Excel sem formula'
+
+# Listar todos os arquivos na pasta de origem
+arquivos = os.listdir(pasta_origem)
+
+# Filtrar apenas os arquivos .xlsx
+arquivos_xlsx = [f for f in arquivos if f.endswith('.xlsx')]
+
+# Iterar sobre os arquivos
+for arquivo in arquivos_xlsx:
+    # Caminho completo do arquivo de origem
+    arquivo_origem = os.path.join(pasta_origem, arquivo)
+    # Caminho completo do arquivo de destino
+    arquivo_destino = os.path.join(pasta_destino, arquivo)
+
+    # Carregar o arquivo de origem
+    wb = openpyxl.load_workbook(arquivo_origem, data_only=True)
+
+    # Mantendo somente as duas primeiras abas
+    while len(wb.sheetnames) > 2:
+        wb.remove(wb[wb.sheetnames[-1]])
+
+    # Salvar o arquivo de destino
+    wb.save(arquivo_destino)
