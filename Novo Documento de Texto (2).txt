@@ -1,0 +1,41 @@
+import os
+import win32com.client as win32
+import openpyxl
+
+# Pasta de destino
+pasta_destino = 'CUsersAléxia NatisDesktopExcel sem formula'
+
+# Listar todos os arquivos na pasta de destino
+arquivos = os.listdir(pasta_destino)
+
+# Dicionário com os nomes dos arquivos e seus respectivos endereços de e-mail
+email_dict = {
+    'Lucas' 'lcarillo97@hotmail.com',
+    'Bruno' 'lcarillo97@gmail.com',
+    'Gabriela' 'alexianatis1@gmail.com'
+}
+
+# Iniciar o Outlook
+outlook = win32.Dispatch('outlook.application')
+
+# Iterar sobre os arquivos
+for arquivo in arquivos
+    if arquivo.endswith('.xlsx')
+        # Verificar se o nome do arquivo está no dicionário
+        nome_arquivo = os.path.splitext(arquivo)[0]
+        if nome_arquivo in email_dict
+            # Criar um novo e-mail
+            mail = outlook.CreateItem(0)
+
+            # Configurar o destinatário, o assunto e o corpo do e-mail
+            mail.To = email_dict[nome_arquivo]
+            mail.Subject = 'Segue sua comissão'
+            mail.Body = 'Prezados, segue anexo.'
+
+            # Anexar o arquivo
+            mail.Attachments.Add(os.path.join(pasta_destino, arquivo))
+
+            # Enviar o e-mail
+            mail.Send()
+
+print('Emails enviados.')
